@@ -1,6 +1,9 @@
 add /etc/hosts  
 `127.0.0.1 db.lan, redis.lan`  
 
+`cp ./config/.env.template ./config/.env`  
+`cp .env.template .env`  
+
 env  
 `poetry install`  
 
