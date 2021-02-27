@@ -1,0 +1,52 @@
+# -*- coding: utf-8 -*-
+
+
+"""
+This file contains all the settings that defines the development server.
+
+SECURITY WARNING: don't run with debug turned on in production!
+"""
+from typing import List
+
+from server.settings.components import config, BASE_DIR
+from server.settings.components.common import INSTALLED_APPS, MIDDLEWARE
+
+# Setting the development status:
+DEBUG = True
+IS_LOCAL = True
+
+ALLOWED_HOSTS = [
+    config('DOMAIN_NAME'),
+    '127.0.0.1',
+]
+
+
+# Static files:
+STATIC_URL = config('CDN_HOST')
+
+
+# Installed apps for developement only:
+INSTALLED_APPS += (
+    'debug_toolbar',
+)
+
+
+# Static files:
+STATICFILES_DIRS: List[str] = []
+
+
+# Django debug toolbar:
+MIDDLEWARE += (
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+)
+
+
+def custom_show_toolbar(request):
+    """Only show the debug toolbar to users with the superuser flag."""
+    return request.user.is_superuser
+
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK':
+        'server.settings.environments.local.custom_show_toolbar',
+}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="text-center">Orders</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    {% for order in orders_list %}
+      <p>Customer: {{ order.customer.username }}, order number: {{ order.number }}</p>
+      <p>Order items:</p>
+      {% for product in order.get_order_items %}
+        <p>
+          product name: <span class="font-weight-bold">{{ product.content_object.name }}</span> |
+          product price: <span class="font-weight-bold">{{ product.content_object.price }}</span>
+        </p>
+        {% endfor %}
+    <hr>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

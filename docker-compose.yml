@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  db:
+    container_name: ${APP_NAME}-db
+    image: postgis/postgis:13-3.1-alpine
+    environment:
+      POSTGRES_DB: srcdev_db
+      POSTGRES_USER: srcdev_user
+      POSTGRES_PASSWORD: srcdev_pass
+    ports:
+      - 15432:5432
+    volumes:
+      - ${SRC_SERVICES_DIR}/db-data:/var/lib/postgresql/data
+      - ${SRC_SERVICES_DIR}/backups:/backups
+
+    networks:
+      internal:
+        aliases:
+          - db.lan
+          - db
+
+  redis:
+    image: redis
+    container_name: ${APP_NAME}-redis
+    ports:
+      - 16379:6379
+    networks:
+      internal:
+        aliases:
+          - redis.lan
+          - redis
+
+networks:
+  internal:
+    driver: bridge
